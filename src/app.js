@@ -10,7 +10,16 @@ import intranetRoutes from "./routes/intranet.routes.js"
 const app = express()
 
 app.use(cors({
-    origin: 'https://transcurrin-cl-client.vercel.app',
+    // en modo produccion
+    // origin: 'https://transcurrin-cl-client.vercel.app',
+
+
+// tambien cambiar en el vercel.json
+// "Access-Control-Allow-Origin": "https://transcurrin-cl-client.vercel.app",
+
+
+    // en modo dev
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
