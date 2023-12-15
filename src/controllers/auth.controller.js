@@ -1,13 +1,8 @@
 import userService from "../models/user.model.js"
 import bcrypt from "bcrypt"
-// import { createAccessToken } from "../libs/jwt.js"
-
 import {createAccessToken} from "../libs/jwt.js"
-
 import jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config.js"
-import { set } from "mongoose"
-
 
 
 export const register = async (req, res) => {
@@ -40,14 +35,8 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
 
         const token = await createAccessToken({ id: userFound._id })
-        res.cookie("token", token,{
-            httpOnly:true,
-            path: '/',
-            maxAge:86400000,
-        }).status(200).send("Cookie creada correctamente")
+        res.cookie("token", token)
         res.json(userFound)
-
-
 }
 
 export const logout = (req, res) => {
