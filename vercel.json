@@ -17,7 +17,7 @@
         }
     ],
     "SET_COOKIE_VALIDATION": {
-        "cookieAllowList": ["some-cookie-name"]
+        "cookieAllowList": ["token"]
       }
 }
 
