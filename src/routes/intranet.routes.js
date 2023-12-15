@@ -9,6 +9,8 @@ router.get("/intranet", authRequired, getServices)
 router.get("/intranet/:id", authRequired, getService)
 router.post("/intranet", authRequired, validateSchema(createServiceSchema), createService)
 router.delete("/intranet/:id", authRequired, deleteService)
-router.put("/intranet/:id", authRequired, updateService)
+router.put("/intranet", authRequired, updateService)
+
+
 
 export default router

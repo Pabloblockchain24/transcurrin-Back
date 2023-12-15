@@ -6,31 +6,36 @@ export const getServices = async(req,res)=>{
     }).populate("user")
     res.json(services)
 }
+
 export const getService = async(req,res)=>{
     const serviceFound = await Service.findById(req.params.id)
     if(!serviceFound) return res.status(404).json({messsage:"Servicio no encontrado"})
     res.json(serviceFound)
 }
 export const createService = async(req,res)=>{
-    const  {ref,container,nave,producto,diasLibres,depotDevolucion} = req.body
+    const  {ref,container,nave,tipo,diasLibres,eta,almDestino} = req.body
     const newService = await Service.create({
         ref,
         container,
         nave, 
-        producto, 
+        tipo, 
         diasLibres,
-        depotDevolucion,
+        eta,
+        demurrage:diasLibres,
+        almDestino,
+        depotDevolucion:"",
         retiroPuerto:"",
-        presentacion:"",
-        fechaDev:"",
-        choferRetira:"",
+        choferRetiro:"",
+        entrega:"",
         choferEntrega:"",
-        choferDevuelve: "",
+        fechaVacio:"",
+        choferVacio: "",
         facProveedor: "",
-        statusFacProveedor: "",
-        facServicio:"",
-        statusFacServicio: "",
-        user:req.user.id
+        statusFacProveedor: "pendiente",
+        user:req.user.id,
+        progEntrega: "",
+        statusEntrega:"",
+        carguioEntrega:""
     })
     res.json(newService)
 }
@@ -42,8 +47,16 @@ export const deleteService = async(req,res)=>{
 
 }
 export const updateService = async(req,res)=>{
-    const serviceFound = await Service.findByIdAndUpdate(req.params.id, req.body, {new:true})
-    if(!serviceFound) return res.status(404).json({messsage:"Servicio no encontrado"})
-    res.json(serviceFound)
+    const  {container, depotDevolucion,retiroPuerto,choferRetiro} = req.body
+
+    const serviceToUpdate = await Service.findOne({container:container})
+    serviceToUpdate.depotDevolucion = depotDevolucion
+    serviceToUpdate.retiroPuerto = retiroPuerto
+    serviceToUpdate.choferRetiro = choferRetiro
+
+    let updateService = await Service.updateOne({container: container}, serviceToUpdate)
+
+    if(!updateService) return res.status(404).json({messsage:"Servicio no encontrado"})
+    res.json(updateService)
 }
 

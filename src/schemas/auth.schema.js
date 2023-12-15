@@ -4,9 +4,9 @@ export const registerSchema = z.object({
     name: z.string({
         required_error: "Nombre es required"
     }),
-    // company: z.string({
-    //     required_error: "Empresa es requerida"
-    // }),
+    company: z.string({
+        required_error: "Empresa es requerida"
+    }),
     email: z.string({
         required_error: "Correo es requerido"
     }).email({

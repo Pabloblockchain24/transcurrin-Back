@@ -37,13 +37,7 @@ export const login = async (req, res) => {
 
     const token = await createAccessToken({ id: userFound._id })
     res.cookie("token", token)
-    res.json({
-        id: userFound._id,
-        name: userFound.name,
-        company: userFound.company,
-        email: userFound.email,
-        verificado: userFound.verificado
-    })
+    res.json(userFound)
 }
 
 export const logout = (req, res) => {
@@ -80,7 +74,8 @@ export const verifyToken =  async(req,res)=>{
         return res.json({
             id: userFound._id,
             name: userFound.name,
-            email: userFound.email
+            email: userFound.email,
+            company: userFound.company
         })
 
     })
