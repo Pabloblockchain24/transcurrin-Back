@@ -11,7 +11,7 @@ const app = express()
 
 app.use(cors({
     // en modo produccion
-    // origin: 'https://transcurrin-cl-client.vercel.app',
+    origin: 'https://transcurrin-cl-client.vercel.app',
 
 
 // tambien cambiar en el vercel.json
@@ -19,10 +19,10 @@ app.use(cors({
 
 
     // en modo dev
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    // origin: 'http://localhost:5173',
+    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    // allowedHeaders: ['Content-Type', 'Authorization'],
+    // credentials: true
 }))
 
 
