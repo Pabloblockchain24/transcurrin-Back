@@ -42,11 +42,9 @@ export const login = async (req, res) => {
     try {
         const token = await createAccessToken({ id: userFound._id })
         res.cookie("token", token,{
+            httpOnly:true,
             path: '/',
             maxAge:86400000,
-            httpOnly:true,
-            sameSitie: "none",
-            secure: true
         }).status(200).send("Cookie creada correctamente")
     } catch (error) {
         res.status(500).send("Error al crear cookie")
