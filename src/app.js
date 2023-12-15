@@ -8,6 +8,8 @@ import authRoutes from "./routes/auth.routes.js"
 import intranetRoutes from "./routes/intranet.routes.js"
 
 const app = express()
+app.use(express.json())
+app.use(cookieParser())
 
 app.use(cors({
     // en modo produccion
@@ -40,8 +42,7 @@ app.get("/", (req,res) => {
     res.send(htmlRespose)
 })
 
-app.use(express.json())
-app.use(cookieParser())
+
 app.use("/api", authRoutes)
 app.use("/api", intranetRoutes)
 
