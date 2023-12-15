@@ -6,6 +6,7 @@ import {createAccessToken} from "../libs/jwt.js"
 
 import jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config.js"
+import { set } from "mongoose"
 
 
 
@@ -39,6 +40,7 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
 
     const token = await createAccessToken({ id: userFound._id })
+    console.log(token)
     res.cookie("token", token)
     res.json(userFound)
 }
