@@ -46,10 +46,13 @@ export const login = async (req, res) => {
             path: '/',
             maxAge:86400000,
         }).status(200).send("Cookie creada correctamente")
+        res.json(userFound)
+
     } catch (error) {
         res.status(500).send("Error al crear cookie")
+        res.json(userFound)
+
     }
-    res.json(userFound)
 }
 
 export const logout = (req, res) => {
