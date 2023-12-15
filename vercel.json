@@ -15,10 +15,7 @@
                 "Access-Control-Allow-Credentials": "true"
             }
         }
-    ],
-    "SET_COOKIE_VALIDATION": {
-        "cookieAllowList": ["token"]
-      }
+    ]
 }
 
 
