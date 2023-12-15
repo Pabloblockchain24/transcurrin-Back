@@ -1,6 +1,8 @@
 import userService from "../models/user.model.js"
 import bcrypt from "bcrypt"
-import { createAccessToken } from "../libs/jwt.js"
+// import { createAccessToken } from "../libs/jwt.js"
+
+import {createAccessToken} from "../libs/jwt.js"
 import jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config.js"
 
