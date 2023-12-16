@@ -41,8 +41,7 @@ export const login = async (req, res) => {
             reject(err)
         } else{
             console.log("Entre al res.cookie")
-            res.cookie("token", token)
-            res.json(userFound)
+            res.cookie("token", token,{sameSite:"none", secure:true}).json(userFound)
         }
     
         }
