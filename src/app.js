@@ -20,7 +20,7 @@ app.use(cors({
 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization',"Cookie"],
-    credentials: true
+    credentials: "include"
 
     // tambien cambiar en el vercel.json
 // "Access-Control-Allow-Origin": "https://transcurrin-cl-client.vercel.app",
