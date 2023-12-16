@@ -19,7 +19,7 @@ app.use(cors({
     // origin: 'http://localhost:5173',
 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization',"Cookie"],
     credentials: true
 
     // tambien cambiar en el vercel.json
