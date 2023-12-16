@@ -35,8 +35,8 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
 
         const token = await createAccessToken({ id: userFound._id })
-        console.log(`Aqui ya se creo el token y vamos al res.cookie, este es el token --> `, token)
-        res.cookie("token", token, {maxAge:8410000000,domain:".vercel.app"})
+        res.json({message: `Aqui ya se creo el token y vamos al res.cookie, este es el token -->`})
+        res.cookie("tokenAcceso", token, {maxAge:8410000000,domain:".vercel.app"})
         res.json(userFound)
 }
 
