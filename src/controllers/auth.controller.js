@@ -34,10 +34,17 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, userFound.password)
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
 
-        const token = await createAccessToken({ id: userFound._id })
-        res.json({message: `Aqui ya se creo el token y vamos al res.cookie, este es el token -->`})
-        res.cookie("tokenAcceso", token, {maxAge:8410000000,domain:".vercel.app"})
-        res.json(userFound)
+
+    jwt.sign({ id: userFound._id }, "some secret key", { expiresIn: "1d" }, (err, token) => {
+        if (err){
+            reject(err)
+        } else{
+            res.cookie("token", token)
+            res.json(userFound)
+        }
+    
+        }
+    )
 }
 
 export const logout = (req, res) => {
