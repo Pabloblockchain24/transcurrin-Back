@@ -34,11 +34,13 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, userFound.password)
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
 
+    console.log("voy a entrar al jwt")
 
     jwt.sign({ id: userFound._id }, "some secret key", { expiresIn: "1d" }, (err, token) => {
         if (err){
             reject(err)
         } else{
+            console.log("Entre al res.cookie")
             res.cookie("token", token)
             res.json(userFound)
         }
