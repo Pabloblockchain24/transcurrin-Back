@@ -100,7 +100,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export const sendMail = async(req,res)=>{
-    const {nombre,correo,mensaje} = req.body
+    const {nombre,apellido,telefono,correo,empresa,servicio,mensaje} = req.body
 
     const mailOptions = {
         from: "Transcurrin solicitud contacto<parcepaiva@gmail.com>",
@@ -109,8 +109,12 @@ export const sendMail = async(req,res)=>{
         html: `
         <div>
             <h1>${nombre} </h1>
-            <h2>${correo} </h2>
-            <h3>${mensaje} </h3>
+            <h2>${apellido} </h2>
+            <h3>${telefono} </h3>
+            <h1>${correo} </h1>
+            <h2>${empresa} </h2>
+            <h3>${servicio} </h3>
+            <h1>${mensaje} </h1>
         </div>`
     }
 
