@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import {createAccessToken} from "../libs/jwt.js"
 import jwt from "jsonwebtoken"
 import { TOKEN_SECRET } from "../config.js"
+import nodemailer from "nodemailer"
 
 
 export const register = async (req, res) => {
@@ -86,5 +87,40 @@ export const verifyToken =  async(req,res)=>{
             company: userFound.company
         })
 
+    })
+}
+
+const transporter = nodemailer.createTransport({
+    service:"gmail",
+    port:587,
+    auth:{
+        user:"parcepaiva@gmail.com",
+        pass:"yydj uzct rbyg bluz"
+    }
+})
+
+export const sendMail = async(req,res)=>{
+    const {nombre,correo,mensaje} = req.body
+
+    const mailOptions = {
+        from: "Transcurrin solicitud contacto<parcepaiva@gmail.com>",
+        to: "transportescurrin@gmail.com",
+        subject: "Contacto Transcurrin",
+        html: `
+        <div>
+            <h1>${nombre} </h1>
+            <h2>${correo} </h2>
+            <h3>${mensaje} </h3>
+        </div>`
+    }
+
+    transporter.sendMail(mailOptions, (error, info)=>{
+        if(error){
+            console.log(error)
+            res.send("Error al enviar correo")
+        }else{
+            console.log("Correo enviado")
+            res.send(`Correo enviado`)
+        }
     })
 }

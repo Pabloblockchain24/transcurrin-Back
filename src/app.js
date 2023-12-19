@@ -3,7 +3,6 @@ import  express  from "express";
 import cookieParser from "cookie-parser"
 import cors from "cors"
 
-
 import authRoutes from "./routes/auth.routes.js"
 import intranetRoutes from "./routes/intranet.routes.js"
 
