@@ -105,7 +105,7 @@ export const sendMail = async(req,res)=>{
     const mailOptions = {
         from: "Transcurrin.cl Contacto <parcepaiva@gmail.com>",
         to: "transportescurrin@gmail.com",
-        subject: "Solicitud nuevo cliente",
+        subject: `Solicitud ${empresa}`,
         html: `
         <html>
             <head>
