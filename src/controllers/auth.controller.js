@@ -103,19 +103,44 @@ export const sendMail = async(req,res)=>{
     const {nombre,apellido,telefono,correo,empresa,servicio,mensaje} = req.body
 
     const mailOptions = {
-        from: "Transcurrin solicitud contacto<parcepaiva@gmail.com>",
+        from: "Transcurrin.cl Contacto <parcepaiva@gmail.com>",
         to: "transportescurrin@gmail.com",
-        subject: "Contacto Transcurrin",
+        subject: "Solicitud nuevo cliente",
         html: `
-        <div>
-            <h1>${nombre} </h1>
-            <h2>${apellido} </h2>
-            <h3>${telefono} </h3>
-            <h1>${correo} </h1>
-            <h2>${empresa} </h2>
-            <h3>${servicio} </h3>
-            <h1>${mensaje} </h1>
-        </div>`
+        <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 20px;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 30px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    }
+                    p {
+                        margin-bottom: 15px;
+                        line-height: 1.6;
+                        font-weight: bold;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1> ¡ Tienes una nueva solicitud de contacto !  </h1>
+                    <p>Nombre Completo: ${nombre} ${apellido}</p>
+                    <p>Teléfono: ${telefono}</p>
+                    <p>Correo: ${correo}</p>
+                    <p>Empresa: ${empresa}</p>
+                    <p>Servicio: ${servicio}</p>
+                    <p>Mensaje: ${mensaje}</p>
+                </div>
+            </body>
+        </html>`
     }
 
     transporter.sendMail(mailOptions, (error, info)=>{
