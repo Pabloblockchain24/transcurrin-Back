@@ -1,13 +1,21 @@
-import { TOKEN_SECRET } from "../config.js"
 import jwt from "jsonwebtoken"
+import config from "../config/config.js"
 
 export function createAccessToken(payload) {
-    console.log("Estoy dentro de la funcion createAccessToken")
     return new Promise((resolve, reject) => {
-        jwt.sign(payload, "some secret key", { expiresIn: "1d" }, (err, token) => {
+        jwt.sign(payload, config.TOKEN_SECRET, { expiresIn: "1d" }, (err, token) => {
             if (err) reject(err)
-            console.log(`Este es el token que devolvi desde dentro del create access token`, token)
             resolve(token)
         })
     })
 }
+
+export const createResetToken = function(payload) {
+    return new Promise((resolve, reject) => {
+        jwt.sign(payload, config.TOKEN_SECRET, { expiresIn: "1h" }, (err, token) => {
+            if (err) reject(err)
+            resolve(token)
+        })
+    })
+}
+

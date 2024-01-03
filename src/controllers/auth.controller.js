@@ -1,10 +1,9 @@
 import userService from "../models/user.model.js"
 import bcrypt from "bcrypt"
-import {createAccessToken} from "../libs/jwt.js"
+import {createAccessToken, createResetToken} from "../libs/jwt.js"
 import jwt from "jsonwebtoken"
-import { TOKEN_SECRET } from "../config.js"
 import nodemailer from "nodemailer"
-
+import config from "../config/config.js"
 
 export const register = async (req, res) => {
     const { name, company, email, password,rol } = req.body
@@ -12,7 +11,7 @@ export const register = async (req, res) => {
         const userFound = await userService.findOne({email})
         if (userFound) return res.status(400).json(["El email ya esta registrado"])
         const hash = await bcrypt.hash(password, 10)
-        const newUser = await userService.create({ name, company, email, password: hash, rol, verificado:false })
+        const newUser = await userService.create({ name, company, email, password: hash, rol, verificado:false, resetToken:"" })
         const token = await createAccessToken({ id: newUser._id })
         res.cookie("token", token)
         res.json({
@@ -31,20 +30,14 @@ export const login = async (req, res) => {
     const { email, password } = req.body
     const userFound = await userService.findOne({ email })
     if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" })
-
     const isMatch = await bcrypt.compare(password, userFound.password)
     if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
-
-    console.log("voy a entrar al jwt")
-
-    jwt.sign({ id: userFound._id }, "some secret key", { expiresIn: "1d" }, (err, token) => {
+    jwt.sign({ id: userFound._id }, config.TOKEN_SECRET, { expiresIn: "1d" }, (err, token) => {
         if (err){
             reject(err)
         } else{
-            console.log("Entre al res.cookie")
             res.cookie("token", token,{sameSite:"none", secure:true}).json(userFound)
         }
-    
         }
     )
 }
@@ -74,7 +67,7 @@ export const verifyToken =  async(req,res)=>{
     const {token} = req.cookies
     if(!token) return res.status(401).json({message: "unauthorized "})
 
-    jwt.verify(token, TOKEN_SECRET, async (err,user)=>{
+    jwt.verify(token, config.TOKEN_SECRET, async (err,user)=>{
         if(err) return res.status(401).json({message: "unauthorized"})
 
         const userFound = await userService.findById(user.id)
@@ -152,4 +145,39 @@ export const sendMail = async(req,res)=>{
             res.send(`Correo enviado`)
         }
     })
+}
+
+export const sendMailReset = async(req,res) => {
+    const {email} = req.body
+
+    let user = await userService.findOne({ email:email })
+    if (!user) return res.status(404).json({ message: "Email ingresado no existe" });
+
+    const resetToken = await createResetToken({id: user._id})
+    user.resetToken = resetToken;
+    await userService.updateOne({_id: user._id}, user)
+    const resetLink = `http://localhost:8080/api/passwordRequestResetPassword/${resetToken}`
+
+    const mailOptions = {
+        from: "Transcurrin.cl Contacto <parcepaiva@gmail.com>",
+        to: `${email}`,
+        subject: `Recuperacion contraseña ${email}`,
+        html: `
+        <html>
+            <head>
+            </head>
+            <body>
+                <div> Para restablecer tu contraseña, haz clic en el siguiente enlace: ${resetLink} </div>
+            </body>
+        </html>`
+    }
+    transporter.sendMail(mailOptions, (error, info)=>{
+        if(error){
+            console.log(error)
+            res.send("Error al enviar correo")
+        }else{
+            res.send(`Correo enviado`)
+        }
+    })
+
 }

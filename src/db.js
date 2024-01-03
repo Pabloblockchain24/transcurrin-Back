@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import config from "./config/config.js";
 
 export const connectDB = async() => {
-    await mongoose.connect("mongodb+srv://transportescurrin:SalcedoCluster@transcurrincluster.hjnritx.mongodb.net/?retryWrites=true&w=majority")
+    await mongoose.connect(config.MONGO_URL)
     .then(() => {
         console.log("Conectado a la base de datos")
     })

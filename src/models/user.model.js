@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     rol:String,
-    verificado: Boolean
+    verificado: Boolean,
+    resetToken: String
     // roles seran cliente(yerko), admin(yo), choferes(mjimenez), depot(andres)
 })
 
