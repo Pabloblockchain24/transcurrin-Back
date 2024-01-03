@@ -5,6 +5,6 @@ import { resetPassword, changePassword, verifyEmail } from "../controllers/reset
 
 
 router.get("/passwordRequestResetPassword/:tid", resetPassword)
-router.post("/resetPassword/:tid", changePassword)
+router.post("/resetearPassword/:tid", changePassword)
 router.post("/verifyEmail", verifyEmail )
 export default router
