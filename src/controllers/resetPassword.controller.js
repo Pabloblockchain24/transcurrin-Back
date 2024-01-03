@@ -59,7 +59,7 @@ export const changePassword = async(req,res) =>{
         <h3>Contraseña actualizada</h3>
         <script>
             setTimeout(function() {
-                window.location.href = 'https://transcurrin-cl-client.vercel.app/login';
+                window.location.href = 'https://transcurrin-cl-client.vercel.app';
             }, 3000); // Redirige después de 3 segundos
         </script>
     </body>
