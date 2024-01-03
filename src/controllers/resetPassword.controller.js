@@ -52,7 +52,19 @@ export const changePassword = async(req,res) =>{
     const hash = await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
     userFound.password = hash
     await userService.updateOne({_id: userFound._id}, userFound)
-    res.send({ result: "success", message: "Contraseña actualizada" })
+
+    res.send(`
+    <html>
+    <body>
+        <h3>Contraseña actualizada</h3>
+        <script>
+            setTimeout(function() {
+                window.location.href = 'https://transcurrin-cl-client.vercel.app/login';
+            }, 3000); // Redirige después de 3 segundos
+        </script>
+    </body>
+    </html>
+`);
 }
 
 
