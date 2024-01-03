@@ -28,7 +28,7 @@ export const resetPassword = async(req,res) => {
     ${message ? `<p style="color: red;">${message}</p>` : ''}
 
     <h2>Ingresa nueva contraseña</h2>
-       <form method="post" action=""https://server-transcurrin.vercel.app/api/changePassword/${tid}" >
+       <form method="post" action="https://server-transcurrin.vercel.app/api/changePassword/${tid}" >
             <input type="password" name="password" placeholder="Escriba nueva contraseña">
             <button type="submit">RESTABLECER CONTRASEÑA</button>
         </form>
