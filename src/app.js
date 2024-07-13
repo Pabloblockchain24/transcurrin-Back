@@ -11,17 +11,26 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 
-app.use(cors({
-    // en modo produccion
-    // origin: 'https://transcurrin-front.vercel.app',
-    origin: '*',
 
-     // en modo dev
-    // origin: 'http://localhost:5173',
+const allowedOrigins = [
+    'https://transcurrin-front.vercel.app',
+    '*'
+];
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization',"Cookie"],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     credentials: true
-}))
+};
+app.use(cors(corsOptions));
 
 app.use("/api", authRoutes)
 app.use("/api", intranetRoutes)
