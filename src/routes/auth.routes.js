@@ -7,6 +7,8 @@ import { registerSchema, loginSchema } from "../schemas/auth.schema.js";
 
 router.post("/register", validateSchema(registerSchema), register)
 router.post("/login", login)
+router.post("/loginApp", login)
+
 
 router.post("/logout", logout)
 router.get("/profile", authRequired, profile)

@@ -13,7 +13,9 @@ app.use(cookieParser())
 
 app.use(cors({
     // en modo produccion
-    origin: 'https://transcurrin-front.vercel.app',
+    // origin: 'https://transcurrin-front.vercel.app',
+    origin: '*',
+
      // en modo dev
     // origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

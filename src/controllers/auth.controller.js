@@ -42,6 +42,33 @@ export const login = async (req, res) => {
     )
 }
 
+export const loginApp = async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const userFound = await userService.findOne({ email })
+        if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" })
+        const isMatch = await bcrypt.compare(password, userFound.password)
+        if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" })
+        jwt.sign(
+            { id: userFound._id },
+            config.TOKEN_SECRET,
+            { expiresIn: "1d" },
+            (err, token) => {
+                if (err) {
+                    return res.status(500).json({ message: "Error al generar el token", error: err });
+                } else {
+                    res.cookie("token", token, { sameSite: "none", secure: true }).json({data: {...userFound , token}});
+                }
+            }
+        )
+    } catch (error) {
+        res.status(500).json({ message: "Error del servidor", error });
+    }
+}
+
+
+
+
 export const logout = (req, res) => {
     res.cookie("token", "", {
         expires: new Date(0)
