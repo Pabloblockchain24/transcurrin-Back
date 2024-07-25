@@ -120,7 +120,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export const sendMail = async(req,res)=>{
-    const {nombre,apellido,telefono,correo,empresa,servicio,mensaje} = req.body
+    const {nombre,telefono,correo,empresa,servicio,mensaje} = req.body
 
     const mailOptions = {
         from: "Transcurrin.cl Contacto <parcepaiva@gmail.com>",
@@ -152,7 +152,7 @@ export const sendMail = async(req,res)=>{
             <body>
                 <div class="container">
                     <h1> ¡ Tienes una nueva solicitud de contacto !  </h1>
-                    <p>Nombre Completo: ${nombre} ${apellido}</p>
+                    <p>Nombre Completo: ${nombre}</p>
                     <p>Teléfono: ${telefono}</p>
                     <p>Correo: ${correo}</p>
                     <p>Empresa: ${empresa}</p>
@@ -165,10 +165,8 @@ export const sendMail = async(req,res)=>{
 
     transporter.sendMail(mailOptions, (error, info)=>{
         if(error){
-            console.log(error)
             res.send("Error al enviar correo")
         }else{
-            console.log("Correo enviado")
             res.send(`Correo enviado`)
         }
     })
@@ -176,27 +174,25 @@ export const sendMail = async(req,res)=>{
 
 export const sendMailReset = async(req,res) => {
     const {email} = req.body
-
     let user = await userService.findOne({ email:email })
-    if (!user) return res.status(404).json({ message: "Email ingresado no existe" });
-
+    if (!user) return res.status(400).json({ message: "Usuario ingresado no encontrado" });
+    
     const resetToken = await createResetToken({id: user._id})
     user.resetToken = resetToken;
     await userService.updateOne({_id: user._id}, user)
-    const resetLink = `http://localhost:8080/api/passwordRequestResetPassword/${resetToken}`
+    const resetLink = `http://localhost:8080/api/resetPassword/${resetToken}`
     // const resetLink = `https://server-transcurrin.vercel.app/api/passwordRequestResetPassword/${resetToken}`
 
-
     const mailOptions = {
-        from: "Transcurrin.cl Contacto <parcepaiva@gmail.com>",
+        from: "Transcurrin.cl",
         to: `${email}`,
-        subject: `Recuperacion contraseña ${email}`,
+        subject: `Recuperacion contraseña transcurrin.cl`,
         html: `
         <html>
             <head>
             </head>
             <body>
-                <div> Para restablecer tu contraseña, haz clic en el siguiente enlace: ${resetLink} </div>
+                <div> Para establecer tu contraseña, haz clic en el siguiente enlace: ${resetLink} </div>
             </body>
         </html>`
     }
@@ -208,5 +204,4 @@ export const sendMailReset = async(req,res) => {
             res.send(`Correo enviado`)
         }
     })
-
 }

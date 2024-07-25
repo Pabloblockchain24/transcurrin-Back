@@ -13,8 +13,11 @@ app.use(cookieParser())
 
 
 const allowedOrigins = [
-    'https://transcurrin-front.vercel.app',
-    '*'
+    'https://transcurrin.cl',
+    'https://server-transcurrin.vercel.app',
+    '*',
+    'http://localhost:5173',
+    "http://localhost:8080"
 ];
 const corsOptions = {
     origin: (origin, callback) => {

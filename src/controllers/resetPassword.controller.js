@@ -12,7 +12,7 @@ export const getMessage = () => {
   return message;
 };
 
-
+/* This action is triggered after clicking the link in the email reset password */
 export const resetPassword = async(req,res) => {
     let tid = req.params.tid
     const message = getMessage();
@@ -23,12 +23,12 @@ export const resetPassword = async(req,res) => {
         <title>TRANSCURRIN || TRANSPORTE Y LOGISTICA </title>
     </head>
     <body>
-    <h1>RESTABLECER PASSWORD</h1>
+    <h1>ESTABLECER PASSWORD</h1>
 
-    ${message ? `<p style="color: red;">${message}</p>` : ''}
+     ${message ? `<p style="color: red;">${message}</p>` : ''}
 
     <h2>Ingresa nueva contraseña</h2>
-       <form method="post" action="https://server-transcurrin.vercel.app/api/changePassword/${tid}" >
+       <form method="post" action="http://localhost:8080/api/changePassword/${tid}" >
             <input type="password" name="password" placeholder="Escriba nueva contraseña">
             <button type="submit">RESTABLECER CONTRASEÑA</button>
         </form>
@@ -37,12 +37,13 @@ export const resetPassword = async(req,res) => {
     res.send(htmlRespose)
 }
 
+/* This action changes password after resetPassword function  */
 export const changePassword = async(req,res) =>{
     const token = req.params.tid;
     const {password} = req.body
 
     let userFound = await userService.findOne({resetToken: token})
-    if (!userFound) return res.status(404).json({ message: "Usuario no encontrado" });
+    if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" });
 
     const isSamePassword = await bcrypt.compare(password, userFound.password)
     if(isSamePassword){
@@ -51,6 +52,8 @@ export const changePassword = async(req,res) =>{
     }
     const hash = await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
     userFound.password = hash
+    userFound.verificado = true
+    userFound.resetToken = ""
     await userService.updateOne({_id: userFound._id}, userFound)
 
     res.send(`
@@ -59,8 +62,8 @@ export const changePassword = async(req,res) =>{
         <h3>Contraseña actualizada</h3>
         <script>
             setTimeout(function() {
-                window.location.href = 'https://transcurrin-cl-client.vercel.app';
-            }, 3000); // Redirige después de 3 segundos
+                window.location.href = 'http://localhost:5173/';
+            }, 3000);
         </script>
     </body>
     </html>
