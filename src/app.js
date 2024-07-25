@@ -13,7 +13,7 @@ app.use(cookieParser())
 
 
 const allowedOrigins = [
-    'https://transcurrin.cl',
+    'https://www.transcurrin.cl',
     'https://server-transcurrin.vercel.app',
     '*',
     'http://localhost:5173',
