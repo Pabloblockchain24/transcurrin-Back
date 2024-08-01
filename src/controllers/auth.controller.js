@@ -181,7 +181,7 @@ export const sendMailReset = async(req,res) => {
     user.resetToken = resetToken;
     await userService.updateOne({_id: user._id}, user)
     // const resetLink = `http://localhost:8080/api/resetPassword/${resetToken}`
-    const resetLink = `https://server-transcurrin.vercel.app/api/passwordRequestResetPassword/${resetToken}`
+    const resetLink = `https://server-transcurrin.vercel.app/api/resetPassword/${resetToken}`
 
     const mailOptions = {
         from: "Transcurrin.cl",
